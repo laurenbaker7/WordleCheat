@@ -2,12 +2,8 @@ from tkinter import *
 from tkinter import ttk
 
 import sys
-import time
 import tkinter
-import os.path
 from wordleMain import *
-
-_Windows = sys.platform == 'win32'  # True if on Win95/98/NT
 
 _root_window = None      # The root window for graphics output
 _canvas = None      # The canvas which holds graphics
@@ -20,12 +16,6 @@ allWords = None
 
 def formatColor(r, g, b):
     return '#%02x%02x%02x' % (int(r * 255), int(g * 255), int(b * 255))
-
-if _Windows:
-    _canvas_tfonts = ['times new roman', 'lucida console']
-else:
-    _canvas_tfonts = ['times', 'lucidasans-24']
-    pass # XXX need defaults here
 
 def begin_graphics(width=1200, height=700, color=formatColor(193, 193, 193), title=None):
 
@@ -57,33 +47,7 @@ def begin_graphics(width=1200, height=700, color=formatColor(193, 193, 193), tit
     except:
         _root_window = None
         raise
-
-    # Bind to key-down and key-up events
-    _root_window.bind( "<KeyPress>", _keypress )
-    _root_window.bind( "<KeyRelease>", _keyrelease )
-    _root_window.bind( "<FocusIn>", _clear_keys )
-    _root_window.bind( "<FocusOut>", _clear_keys )
-    _root_window.bind( "<Button-1>", _leftclick )
-    _root_window.bind( "<Button-2>", _rightclick )
-    _root_window.bind( "<Button-3>", _rightclick )
-    _root_window.bind( "<Control-Button-1>", _ctrl_leftclick)
-    _clear_keys()
-
-_leftclick_loc = None
-_rightclick_loc = None
-_ctrl_leftclick_loc = None
-
-def _leftclick(event):
-    global _leftclick_loc
-    _leftclick_loc = (event.x, event.y)
-
-def _rightclick(event):
-    global _rightclick_loc
-    _rightclick_loc = (event.x, event.y)
-
-def _ctrl_leftclick(event):
-    global _ctrl_leftclick_loc
-    _ctrl_leftclick_loc = (event.x, event.y)
+    #_clear_keys()
 
 
 def draw_background():
@@ -92,25 +56,6 @@ def draw_background():
 
 def _destroy_window(event=None):
     sys.exit(0)
-#    global _root_window
-#    _root_window.destroy()
-#    _root_window = None
-    #print("DESTROY")
-
-def end_graphics():
-    global _root_window, _canvas, _mouse_enabled
-    try:
-        try:
-            sleep(1)
-            if _root_window != None:
-                _root_window.destroy()
-        except SystemExit as e:
-            print('Ending graphics raised an exception:', e)
-    finally:
-        _root_window = None
-        _canvas = None
-        _mouse_enabled = 0
-        _clear_keys()
 
 def clear_screen(background=None):
     global _canvas_x, _canvas_y
@@ -140,41 +85,6 @@ def text(pos, color, contents, font='Helvetica', size=12, style='normal', anchor
     x, y = pos
     font = (font, str(size), style)
     return _canvas.create_text(x, y, fill=color, text=contents, font=font, anchor=anchor)
-
-##############################################################################
-### Keypress handling ########################################################
-##############################################################################
-
-# We bind to key-down and key-up events.
-
-_keysdown = {}
-_keyswaiting = {}
-# This holds an unprocessed key release.  We delay key releases by up to
-# one call to keys_pressed() to get round a problem with auto repeat.
-_got_release = None
-
-def _keypress(event):
-    global _got_release
-    #remap_arrows(event)
-    _keysdown[event.keysym] = 1
-    _keyswaiting[event.keysym] = 1
-#    print(event.char, event.keycode)
-    _got_release = None
-
-def _keyrelease(event):
-    global _got_release
-    #remap_arrows(event)
-    try:
-        del _keysdown[event.keysym]
-    except:
-        pass
-    _got_release = 1
-
-def _clear_keys(event=None):
-    global _keysdown, _got_release, _keyswaiting
-    _keysdown = {}
-    _keyswaiting = {}
-    _got_release = None
 
 def createLetterDict():
     global letterDict
