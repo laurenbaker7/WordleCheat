@@ -220,3 +220,8 @@ if __name__ == '__main__':
     ttk.Button(frm, text='Start Over', command=startOver).grid(row=3, column=2)
 
     _root_window.mainloop()
+
+# -------
+# Licensing Information: Some of the functions in this file involving graphics were inspired from The Pacman AI project in CS 188 at UC Berkeley,
+# primarily written by John DeNero (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
+# For more info, see http://inst.eecs.berkeley.edu/~cs188/sp09/pacman.html
