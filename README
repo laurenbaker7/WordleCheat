@@ -1,5 +1,7 @@
 WORDLE CHEAT:
 
+This is an application that helps find the solution to the daily word game Wordle. Users can plug in the words that they have guessed, as well as the results of those guesses, and the application will return a list of possible words that could be the correct word. 
+
 Goal:
 - Easy Mode: returns list of possible words
 - Medium Mode: gives a list of synonyms for the possible words
